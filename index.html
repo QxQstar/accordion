@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>手风琴</title>
+	<style type="text/css">
+	*{
+		padding: 0;
+		margin: 0;
+	}
+	.list{
+		height: 300px;
+	}
+	.list a{
+		position: relative;
+		display: block;
+		height: 100%;
+		width: 100%;
+		overflow: hidden;
+	}
+	.list li{
+		position: relative;
+		list-style: none;
+		float: left;
+		height: 100%;
+		width: 300px;
+		border-right: 1px #000 solid;
+		opacity: 0.5;
+	}
+	.list li .info{
+		position: absolute;
+		top: 0;
+		left:0;
+		margin:5px 0 0 5px; 
+	}
+	.list li img{
+		position: absolute;
+		right: -40px;
+		bottom: 0;
+		
+	}
+	.info{
+		color: #D76A36;
+		font-size: 14px;
+	}
+	.list .cur{
+		opacity: 1;
+		width: 400px;
+	}
+	.list .cur img{
+		width: 300px;
+		right: 0;
+	}
+	.cur .info{
+		font-size: 18px;
+	}
+	</style>
+</head>
+<body>
+	<div class='warp'>
+		<ul class='list' id='list'>
+			<li class='cur'>
+				<a href='#'>
+					<div class='info'>
+						<p>莲花禅</p>
+					</div>
+					<img src="img/莲花禅.png">
+				</a>
+			</li>
+			<li>
+				<a href='#'>
+					<div class='info'>
+						<p>双子座</p>
+					</div>
+					<img src="img/双子座.png">
+				</a>
+			</li>
+			<li>
+				<a href='#'>
+					<div class='info'>
+						<p>疑问</p>
+					</div>
+					<img src="img/小花儿-疑问.png">
+				</a>
+			</li>
+		</ul>
+	</div>
+	<script type="text/javascript">
+		var untilEvent = {
+			addEvent:function(element,type,handler){
+				if(element.addEventListener){
+					element.addEventListener(type,handler,false);
+				}else if(element.attachEvent){
+					element.attachEvent('on'+type,handler);
+				}else{
+					element['on'+type] = handler;
+				}
+			},
+			getEvent:function(event){
+				return event?event:window.event;
+			},
+			getTarget:function(event){
+				return event.target||event.srcElement;
+			}
+		};
+		function addLoadEvent(func){
+			var oldLoad = window.onload;
+			if(typeof oldLoad != 'function'){
+				window.onload = func();
+			}else{
+				window.onload = function(){
+					oldLoad();
+					func();
+				};
+			}
+		}
+		function anmitate(){
+			var list  = document.getElementById('list');
+			untilEvent.addEvent(list,'mouseover',handler);
+			
+		}
+		function handler(event){
+			var event = untilEvent.getEvent(event);
+			var target = untilEvent.getTarget(event);
+			while(target.tagName.toLowerCase() != 'li' && target.tagName.toLowerCase() != 'body'){
+				target = target.parentNode;
+			}
+			var parented = target.parentNode;
+			var childes = parented.childNodes
+			for(var i = 0,len = childes.length;i<len;i++){
+				var cur = childes[i]
+				if(cur.nodeType == 1){
+					cur.className = '';
+				}
+			}
+			target.className = 'cur';
+		}
+		addLoadEvent(anmitate);
+	</script>
+</body>
+</html>
